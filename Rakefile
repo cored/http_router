@@ -1,5 +1,12 @@
 require 'spec'
 require 'spec/rake/spectask'
+require 'rubygems'
+require 'rake'
+require 'echoe'
+
+def extract_version
+    File.open('VERSION').readline.chop
+end
 Spec::Rake::SpecTask.new(:spec) do |t|
   t.spec_opts ||= []
   t.ruby_opts << "-rrubygems"
@@ -8,6 +15,14 @@ Spec::Rake::SpecTask.new(:spec) do |t|
   t.ruby_opts << "-rspec/spec_helper"
   t.spec_opts << "--options" << "spec/spec.opts"
   t.spec_files = FileList['spec/**/*_spec.rb']
+end
+
+Echoe.new('http_router', extract_version) do |p|
+    p.description       = "A kick-ass HTTP router for use in Rack & Sinatra" 
+    p.url               = "http://github.com/joshbuddy/http_router"  
+    p.author            = "Joshua Hull"
+    p.email             = "joshbuddy@gmail.com"
+    p.development_dependencies = []
 end
 
 begin
