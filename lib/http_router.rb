@@ -12,6 +12,7 @@ require 'http_router/response'
 require 'http_router/path'
 require 'http_router/optional_compiler'
 require 'http_router/parts'
+require 'http_router/version'
 
 class HttpRouter
   # Raised when a Route is not able to be generated.
@@ -110,7 +111,7 @@ class HttpRouter
   #
   # Returns the route object.
   def add(path, options = nil)
-    add_route Route.new(self, path.dup).with_options(options)
+    add_route route(path.dup).with_options(options)
   end
 
   # Adds a route to be recognized. This must be a HttpRouter::Route object. Returns the route just added.
@@ -197,6 +198,7 @@ class HttpRouter
         elsif !response.matched?
           return [response.status, response.headers, []]
         end
+        process_params(env, response)
       end
       env['router.response'] = response
       @default_app.call(env)
@@ -227,9 +229,14 @@ class HttpRouter
     Glob.new(self, *args)
   end
 
+  # Returns a new glob
+  def route(*args)
+    Route.new(self, *args)
+  end
+
   # Creates a deep-copy of the router.
-  def clone
-    cloned_router = HttpRouter.new(@default_app, @options)
+  def clone(klass = self.class)
+    cloned_router = klass.new(@default_app, @options)
     @routes.each do |route|
       new_route = route.clone(cloned_router)
       cloned_router.add_route(new_route).compile

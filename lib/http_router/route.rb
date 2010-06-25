@@ -26,7 +26,7 @@ class HttpRouter
 
     # Returns the options used to create this route.
     def as_options
-      {:matching => @matches_with, :conditions => @conditions, :default_values => @default_values, :name => @name}
+      {:matching => @matches_with, :conditions => @conditions, :default_values => @default_values, :name => @name, :partial => @partially_match}
     end
 
     # Creates a deep uncompiled copy of this route.
@@ -41,10 +41,13 @@ class HttpRouter
     # *conditions -- Maps to #conditions method.
     # *default_value -- Maps to #default_value method.
     def with_options(options)
-      name(options[:name]) if options && options[:name]
-      matching(options[:matching]) if options && options[:matching]
-      condition(options[:conditions]) if options && options[:conditions]
-      default(options[:default_values]) if options && options[:default_values]
+      if options
+        name(options[:name])              if options[:name]
+        matching(options[:matching])      if options[:matching]
+        condition(options[:conditions])   if options[:conditions]
+        default(options[:default_values]) if options[:default_values]
+        partial(options[:partial])        if options[:partial]
+      end
       self
     end
 

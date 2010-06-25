@@ -8,4 +8,5 @@ group :development do
   gem 'rake'
   gem 'sinatra'
   gem 'rbench'
+  gem 'tumbler', ">= 0.0.11"
 end
