@@ -1,3 +1,13 @@
+== 0.3.2
+
+* Made the sinatra extension Ruby 1.9.2 compatible (Matt Aimonetti, 05fb162)
+
+== 0.3.1
+
+* Node transplant in request tree building not working in all cases. (Joshua Hull, f82ae82)
+* Smaller set of benchmarks to match rack-mount (Joshua Hull, ca723e9)
+* Better 405 test that is order invariant. (Thanks Cored!) (Joshua Hull, 4ad40e6)
+
 == 0.3.0
 
 * Unescape param values (Joshua Hull, d7a6a1f)
